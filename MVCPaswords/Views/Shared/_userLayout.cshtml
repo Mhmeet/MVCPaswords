@@ -1,0 +1,314 @@
+﻿
+<!DOCTYPE html>
+<!--
+Author: Keenthemes
+Product Name: Metronic - Bootstrap 5 HTML, VueJS, React, Angular & Laravel Admin Dashboard Theme
+Purchase: https://1.envato.market/EA4JP
+Website: http://www.keenthemes.com
+Contact: support@keenthemes.com
+Follow: www.twitter.com/keenthemes
+Dribbble: www.dribbble.com/keenthemes
+Like: www.facebook.com/keenthemes
+License: For each use you must have a valid license purchased only from above link in order to legally use the theme for your project.
+-->
+<html lang="en">
+<!--begin::Head-->
+<!-- Mirrored from preview.keenthemes.com/metronic8/demo13/dark/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 20 Dec 2021 07:09:10 GMT -->
+<!-- Added by HTTrack -->
+<!-- /Added by HTTrack -->
+<head>
+    <title>oKSitem Teknoloji All Password</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta property="og:locale" content="en_US" />
+
+    <link rel="shortcut icon" href="~/demo13/assets/media/logos/favicon.ico" />
+    <link href="~/Content/apis.css" rel="stylesheet" />
+    <!--begin::Fonts-->
+    <link href="~/demo13/assets/plugins/custom/fullcalendar/fullcalendar.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="~/demo13/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="~/demo13/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="~/demo13/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="sweetalert2.min.css">
+    <script src="~/Scripts/jquery-3.6.0.min.js"></script>
+    <script src="sweetalert2.min.js"></script>
+    <script src="~/demo13/assets/plugins/global/plugins.bundle.js"></script>
+    <script src="~/demo13/assets/js/scripts.bundle.js"></script>
+    <!--end::Glob~/demo13 Javascript Bundle-->
+    <!--begin::Pa~/demo13 Vendors Javascript(used by this page)-->
+    <script src="~/demo13/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js"></script>
+    <script src="~/demo13/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+    <!--end::Page~/demo13endors Javascript-->
+    <!--begin::Pa~/demo13 Custom Javascript(used by this page)-->
+    <script src="~/demo13/assets/js/custom/widgets.js"></script>
+    <script src="~/demo13/assets/js/custom/apps/chat/chat.js"></script>
+    <script src="~/demo13/assets/js/custom/intro.js"></script>
+    <script src="~/demo13/assets/js/custom/modals/upgrade-plan.js"></script>
+    <script src="~/demo13/assets/js/custom/modals/create-app.js"></script>
+    <script src="~/demo13/assets/js/custom/modals/users-search.js"></script>
+    <style>
+        /*Right*/
+        .modal-dialog {
+            position: fixed;
+            margin: auto;
+            width: 600px;
+            height: 100%;
+            right: 0px;
+        }
+
+        .modal-content {
+            height: 100%;
+        }
+    </style>
+    @*<script type="text/javascript">
+            $(document).ready(function () {
+                $("#modaliac").click(function () {s
+                    $('#myModal2').modal();
+                })
+            })
+        </script>*@
+</head>
+<!--end::Head-->
+
+<!--begin::Body-->
+<body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled toolbar-fixed toolbar-tablet-and-mobile-fixed aside-enabled aside-fixed" style="--kt-toolbar-height:55px;--kt-toolbar-height-tablet-and-mobile:55px">
+    <div class="modal fade" tabindex="-1" id="kt_modal_1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Kategori Talep Formu </h5>
+
+                    <!--begin::Close-->
+                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                        <span class="svg-icon svg-icon-2x"></span>
+                    </div>
+                    <!--end::Close-->
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="kategoriAd">Kategori İsmi</label>
+                        <input type="email" class="form-control" id="KategoriAd" placeholder="messenger,drive,win keys gibi...">
+                    </div>
+                    <div class="form-group">
+                        <label for="Aciklama">Kategorinin Açılma nedeni</label>
+                        <textarea class="form-control" id="Aciklama" rows="3"></textarea>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Kapat</button>
+                    <button type="button" id="kategoritalep" class="btn btn-primary">Talep Et</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
+            <div class="modal-dialog1" role="document">
+                <div class="modal-content1">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        Right Sidebar
+                    </div>
+                    <div class="modal-body">
+                        <p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch.</p>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+    <!--begin::Root-->
+    <div class="d-flex flex-column flex-root">
+        <!--begin::Page-->
+        <div class="page d-flex flex-row flex-column-fluid">
+            <!--begin::Aside-->
+            <div id="kt_aside" class="aside aside-dark aside-hoverable" data-kt-drawer="true" data-kt-drawer-name="aside" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'200px', '300px': '250px'}" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_aside_mobile_toggle">
+                <!--begin::Brand-->
+                <div class="aside-logo flex-column-auto" id="kt_aside_logo">
+                    <!--begin::Logo-->
+
+                    <img alt="Logo" src="~/Content/WhatsApp_Image_2022-03-29_at_1.16.40_PM-removebg-preview.png" class="h-50px logo" />
+
+                    <!--end::Logo-->
+                    <!--begin::Aside toggler-->
+                    <div id="kt_aside_toggle" class="btn btn-icon w-auto px-0 btn-active-color-primary aside-toggle" data-kt-toggle="true" data-kt-toggle-state="active" data-kt-toggle-target="body" data-kt-toggle-name="aside-minimize">
+                        <!--begin::Svg Icon | path: icons/duotune/arrows/arr074.svg-->
+                        <span class="svg-icon svg-icon-1 rotate-180">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M11.2657 11.4343L15.45 7.25C15.8642 6.83579 15.8642 6.16421 15.45 5.75C15.0358 5.33579 14.3642 5.33579 13.95 5.75L8.40712 11.2929C8.01659 11.6834 8.01659 12.3166 8.40712 12.7071L13.95 18.25C14.3642 18.6642 15.0358 18.6642 15.45 18.25C15.8642 17.8358 15.8642 17.1642 15.45 16.75L11.2657 12.5657C10.9533 12.2533 10.9533 11.7467 11.2657 11.4343Z" fill="black" />
+                            </svg>
+                        </span>
+
+                    </div>
+
+                </div>
+                <!--end::Brand-->
+                <!--begin::Aside menu-->
+                <div class="aside-menu flex-column-fluid">
+                    <!--begin::Aside Menu-->
+                    <div class="hover-scroll-overlay-y my-2 py-5 py-lg-8" id="kt_aside_menu_wrapper" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_aside_logo, #kt_aside_footer" data-kt-scroll-wrappers="#kt_aside_menu" data-kt-scroll-offset="0">
+                        <!--begin::Menu-->
+                        <div class="menu menu-column menu-title-gray-800 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-500" id="#kt_aside_menu" data-kt-menu="true">
+                            <div class="menu-item">
+                                <div class="menu-content pb-2">
+                                    <span class="menu-section text-muted text-uppercase fs-8 ls-1">Dashboard</span>
+                                </div>
+                            </div>
+                            <div class="menu-item">
+                                <a class="menu-link" href="/user/KayitliSifre">
+                                    <span class="menu-icon">
+
+                                        <img src="~/demo13/assets/media/icons/duotune/abstract/abs001.svg" />
+                                    </span>
+                                    <span class="menu-title">Kayıtlı Şifrelerim</span>
+                                </a>
+                            </div>
+                            @*<div class="menu-item">
+                                    <a class="menu-link " href="/User/SifreEkle">
+                                        <span class="menu-icon">
+                                            <img src="~/demo13/assets/media/icons/duotune/arrows/arr001.svg" />
+                                        </span>
+                                        <span class="menu-title"></span>
+                                    </a>
+                                </div>*@
+
+
+
+
+                        </div>
+                        <!--end::Menu-->
+                    </div>
+                </div>
+
+            </div>
+            <!--end::Aside-->
+            <!--begin::Wrapper-->
+            <div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
+
+                <!--begin::Header-->
+                <div id="kt_header" style="" class="header align-items-stretch">
+                    <div class="toolbar" id="kt_toolbar">
+                        <!--begin::Container-->
+                        <div id="kt_toolbar_container" class="container-fluid d-flex flex-stack">
+
+
+
+                            <!--end::Actions-->
+                        </div>
+                        <!--end::Container-->
+                    </div>
+
+                    <!--begin::Container-->
+                    <div class="container-fluid d-flex align-items-stretch justify-content-between">
+                        <!--begin::Aside mobile toggle-->
+                        <div class="d-flex align-items-center d-lg-none ms-n3 me-1" title="Show aside menu">
+                            <div class="btn btn-icon btn-active-color-white" id="kt_aside_mobile_toggle">
+                                <i class="bi bi-alarm"></i>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-stretch justify-content-between flex-lg-grow-1">
+                            <!--begin::Navbar-->
+                            <div class="d-flex align-items-stretch" id="kt_header_nav">
+                                <!--begin::Menu wrapper-->
+                                <div class="header-menu align-items-stretch" data-kt-drawer="true" data-kt-drawer-name="header-menu" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'200px', '300px': '250px'}" data-kt-drawer-direction="end" data-kt-drawer-toggle="#kt_header_menu_mobile_toggle" data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_body', lg: '#kt_header_nav'}">
+                                    <!--begin::Menu-->
+                                    <div class="menu menu-lg-rounded menu-column menu-lg-row menu-state-bg menu-title-gray-700 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-400 fw-bold my-5 my-lg-0 align-items-stretch" id="#kt_header_menu" data-kt-menu="true">
+                                        <div class="menu-item me-lg-1">
+                                            <a class="menu-link py-3" href="/user/SifreEkle">
+                                                <span class="menu-title">Yeni Şifre Ekle</span>
+                                            </a>
+                                        </div>
+                                        <div class="menu-item me-lg-1">
+                                            <a class="menu-link py-3" id="modalkategori">
+                                                <span class="menu-title">Kategori Talep Formu</span>
+                                            </a>
+                                        </div>
+
+                                        @*<div data-kt-search-element="content" class="menu menu-sub menu-sub-dropdown p-7 w-325px w-md-375px show" data-kt-menu="true" data-popper-placement="bottom-end" style="position: fixed; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(-267px, 65px, 0px); z-index: 105;">
+                                                <label></label>
+                                            </div>*@
+                                    </div>
+                                    <!--end::Menu-->
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <!--end::Wrapper-->
+                    </div>
+                    <!--end::Container-->
+                </div>
+                <!--begin::Content-->
+
+                <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+                    <!--begin::Toolbar-->
+                    @RenderBody()
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <!--begin::Global Javascript Bundle(used by all pages)-->
+
+
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#modalkategori").click(function () {
+                $('#kt_modal_1').modal('show');
+            })
+        })
+    </script>
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#kategoritalep").click(function () {
+            var isim = $("#KategoriAd").val();
+            var aciklama = $("#Aciklama").val();
+
+
+            $.ajax({
+                url: '@Url.Action("KategoriEkle", "User")',
+                type: 'POST',
+                datatype: 'json',
+                data: {a:isim, v:aciklama},
+                success: function (data) {
+                    if (data == true) {
+                        alert("Kategori Talebi Oluşturulmuştur");
+                    }
+                },
+            });
+        });
+    });
+    </script>
+
+    <!--end::Page Custom Javascript-->
+    <!--end::Javascript-->
+    <!--Begin::Google Tag Manager (noscript) -->
+    <!--End::Google Tag Manager (noscript) -->
+</body>
+<!--end::Body-->
+<!-- Mirrored from preview.keenthemes.com/metronic8/demo13/dark/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 20 Dec 2021 07:09:52 GMT -->
+</html>
+
+
+
+
+
+
+
+
+
+
+
+<!--<div id="kt_header_search" class="d-flex align-items-stretch show menu-dropdown" data-kt-search-keypress="true" data-kt-search-min-length="2" data-kt-search-enter="enter" data-kt-search-layout="menu" data-kt-menu-trigger="auto" data-kt-menu-overflow="false" data-kt-menu-permanent="true" data-kt-menu-placement="bottom-end" data-kt-menu-flip="bottom" data-kt-search="true">-->
+<!--begin::Search toggle-->
+@*</div>*@

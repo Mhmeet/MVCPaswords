@@ -1,0 +1,147 @@
+﻿@model MultiView
+@{
+    ViewBag.Title = "Secmece";
+    Layout = "~/Views/Shared/_adminlayout2.cshtml";
+}
+<link rel="stylesheet" href="sweetalert2.min.css">
+
+
+<!--begin::Root-->
+<div class="d-flex justify-content-around">
+    <!--begin::Authentication - Sign-up -->
+    <div class="d-flex ">
+        <!--begin::Content-->
+        <div class="d-flex flex-center flex-column  ">
+            <div class="w-lg-600px bg-body rounded shadow-sm p-10 p-lg-15 mx-auto">
+                <div class="fv-row mb-7">
+                    <label class="form-label fw-bolder text-dark fs-6">Şifrenizin Hangi Kategoride Olduğunu Seçiniz</label>
+                    <select class="form-select form-select-lg form-select-solid" id="selectkullanici">
+                        <option value="-6" selected>Lütfen Bir Kategori Seçiniz</option>
+                        @foreach (var item in Model.kullanicilar)
+                        {
+                            <option value="@item.ID">@item.IsimSoyisim</option>
+                        }
+                    </select>
+                </div>
+                <div class="fv-row mb-7">
+                    <label class="form-label fw-bolder text-dark fs-6">Şifrenizin Hangi Kategoride Olduğunu Seçiniz</label>
+                    <select class="form-select form-select-lg form-select-solid" id="selectkategori">
+                        <option value="-6" selected>Lütfen Bir Kategori Seçiniz</option>
+                        @foreach (var item in Model.Kategori)
+                        {
+                            <option value="@item.ID">@item.Kategori_Isim</option>
+                        }
+                    </select>
+                </div>
+                <div class="text-center">
+                    <button type="button" onclick="teklisiflist()" class="btn btn-lg btn-primary">
+                        <span class="indicator-label">Ara</span>
+                        <span class="indicator-progress">
+                            Please wait...
+                            <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                        </span>
+                    </button>
+                </div>
+
+
+
+            </div>
+
+        </div>
+
+    </div>
+    <div class="d-flex ">
+        <!--begin::Content-->
+        <div class="d-flex flex-center flex-column  ">
+            <div class="w-lg-600px bg-body rounded shadow-sm p-10 p-lg-15 mx-auto">
+                <div class="fv-row mb-7">
+                    <label class="form-label fw-bolder text-dark fs-6">Kullanıcı Adı Soyadı</label>
+                    <input class="form-control form-control-lg form-control-solid" type="text" readonly id="kullaniciadii" autocomplete="off" />
+                </div>
+                <div class="fv-row mb-7">
+                    <label class="form-label fw-bolder text-dark fs-6">Kategori Adı</label>
+                    <input type="text" class="form-control form-control-lg form-control-solid" id="kategoriadi" autocomplete="off" readonly />
+                </div>
+                <div class="fv-row mb-7">
+                    <label class="form-label fw-bolder text-dark fs-6">Şifre</label>
+                    <input type="text" class="form-control form-control-lg form-control-solid" id="sifreadi" readonly />
+                </div>
+                <div class="fv-row mb-5">
+                    <label class="form-label fw-bolder text-dark fs-6">Açıklama</label>
+                    <textarea class="form-control form-control-lg form-control-solid" id="aciklamasifre" autocomplete="off" rows="3" maxlength="150" style="resize:none;" readonly></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="sweetalert2.min.js"></script>
+<script src="~/Scripts/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+    var kategoriid = -6;
+    var kullaniciid = -6;
+    $(document).ready(function () {
+
+        $("#selectkullanici").change(function () {
+            kullaniciid = $(this).children(":selected").attr("value");
+        });
+        $("#selectkategori").change(function () {
+            kategoriid = $(this).children(":selected").attr("value");
+        });
+    });
+
+    function teklisiflist() {
+
+        if (kullaniciid != -6 && kategoriid != -6) {
+            $.ajax({
+                     url: '@Url.Action("Secmece", "Admin")',
+                     type: 'POST',
+                     datatype: 'json',
+                     data: { kulid: kullaniciid, kattid: kategoriid },
+                     success: function (data) {
+                         if (data == false) {
+                             swal.fire(
+                                 'Böyle bi kullanıcıya ait şifre bulunmamaktadır!',
+                                 'İşleminiz gerçekleşirken bi aksilik oluştu!',
+                                 'Error'
+                             )
+                         }
+                         var sifres = data.Result.KayıtliSifre;
+                         var aciklas = data.Result.Aciklama;
+                         var isimmm = data.Result.isimsoyisimler;
+                         var kategorici = data.Result.kategoriisim;
+                         $("#kullaniciadii").val(isimmm);
+                         $("#kategoriadi").val(kategorici);
+                         $("#sifreadi").val(sifres);
+                         $("#aciklamasifre").val(aciklas);
+                     },
+                     error: function (data) {
+
+                     }
+                 });
+        }
+        else if (kullaniciid == -6) {
+            swal.fire(
+                'Bir Kullanıcı Seçiniz!',
+                'Tekrar Seçim Yapınız!',
+                'Error'
+            )
+        }
+        else if (kategoriid == -6) {
+            swal.fire(
+                'Bir kategori Seçiniz!',
+                'Tekrar Seçim Yapınız!',
+                'Error'
+            )
+        }
+        else {
+            swal.fire(
+                'Bir kategori Seçiniz!',
+                'Tekrar Seçim Yapınız!',
+                'Error'
+            )
+        }
+    };
+</script>

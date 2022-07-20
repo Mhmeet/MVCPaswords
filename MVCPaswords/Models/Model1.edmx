@@ -1,0 +1,412 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="MVCPasswordsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Kategori">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Kategori_Isim" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Kategori_Talep">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="kullanici_ID" Type="int" Nullable="false" />
+          <Property Name="Isim" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Aciklama" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="durum" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="KayitTalep">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="isim_soyisim" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="mail" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="adminMi" Type="bit" />
+          <Property Name="durum" Type="bit" Nullable="false" />
+          <Property Name="aciklama" Type="nvarchar" MaxLength="150" />
+        </EntityType>
+        <EntityType Name="Kullanici">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Mail" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Sifre" Type="nvarchar(max)" />
+          <Property Name="IsimSoyisim" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="KayıtTarih" Type="date" />
+          <Property Name="SonGiris" Type="date" />
+          <Property Name="Token" Type="nvarchar" MaxLength="50" />
+          <Property Name="RolID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Sifre">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Kullanici_ID" Type="int" Nullable="false" />
+          <Property Name="KayıtliSifre" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Aciklama" Type="nvarchar" MaxLength="50" />
+          <Property Name="Kategori_ID" Type="int" Nullable="false" />
+          <Property Name="Durum" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Yetki">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Rol" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="Durum" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Kategori_Talep_Kullanici">
+          <End Role="Kullanici" Type="Self.Kullanici" Multiplicity="1" />
+          <End Role="Kategori_Talep" Type="Self.Kategori_Talep" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kullanici">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Kategori_Talep">
+              <PropertyRef Name="kullanici_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Kullanici_Yetki">
+          <End Role="Yetki" Type="Self.Yetki" Multiplicity="1" />
+          <End Role="Kullanici" Type="Self.Kullanici" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Yetki">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Kullanici">
+              <PropertyRef Name="RolID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sifre_Kategori">
+          <End Role="Kategori" Type="Self.Kategori" Multiplicity="1" />
+          <End Role="Sifre" Type="Self.Sifre" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kategori">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Sifre">
+              <PropertyRef Name="Kategori_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sifre_Kullanici">
+          <End Role="Kullanici" Type="Self.Kullanici" Multiplicity="1" />
+          <End Role="Sifre" Type="Self.Sifre" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kullanici">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Sifre">
+              <PropertyRef Name="Kullanici_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MVCPasswordsModelStoreContainer">
+          <EntitySet Name="Kategori" EntityType="Self.Kategori" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Kategori_Talep" EntityType="Self.Kategori_Talep" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="KayitTalep" EntityType="Self.KayitTalep" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Kullanici" EntityType="Self.Kullanici" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sifre" EntityType="Self.Sifre" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Yetki" EntityType="Self.Yetki" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Kategori_Talep_Kullanici" Association="Self.FK_Kategori_Talep_Kullanici">
+            <End Role="Kullanici" EntitySet="Kullanici" />
+            <End Role="Kategori_Talep" EntitySet="Kategori_Talep" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Kullanici_Yetki" Association="Self.FK_Kullanici_Yetki">
+            <End Role="Yetki" EntitySet="Yetki" />
+            <End Role="Kullanici" EntitySet="Kullanici" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sifre_Kategori" Association="Self.FK_Sifre_Kategori">
+            <End Role="Kategori" EntitySet="Kategori" />
+            <End Role="Sifre" EntitySet="Sifre" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sifre_Kullanici" Association="Self.FK_Sifre_Kullanici">
+            <End Role="Kullanici" EntitySet="Kullanici" />
+            <End Role="Sifre" EntitySet="Sifre" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MVCPasswordsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Kategori">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Kategori_Isim" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Sifres" Relationship="Self.FK_Sifre_Kategori" FromRole="Kategori" ToRole="Sifre" />
+        </EntityType>
+        <EntityType Name="Kategori_Talep">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="kullanici_ID" Type="Int32" Nullable="false" />
+          <Property Name="Isim" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Aciklama" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="durum" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Kullanici" Relationship="Self.FK_Kategori_Talep_Kullanici" FromRole="Kategori_Talep" ToRole="Kullanici" />
+        </EntityType>
+        <EntityType Name="KayitTalep">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="isim_soyisim" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="mail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="adminMi" Type="Boolean" />
+          <Property Name="durum" Type="Boolean" Nullable="false" />
+          <Property Name="aciklama" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Kullanici">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Mail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Sifre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsimSoyisim" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="KayıtTarih" Type="DateTime" Precision="0" />
+          <Property Name="SonGiris" Type="DateTime" Precision="0" />
+          <Property Name="Token" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RolID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Kategori_Talep" Relationship="Self.FK_Kategori_Talep_Kullanici" FromRole="Kullanici" ToRole="Kategori_Talep" />
+          <NavigationProperty Name="Yetki" Relationship="Self.FK_Kullanici_Yetki" FromRole="Kullanici" ToRole="Yetki" />
+          <NavigationProperty Name="Sifres" Relationship="Self.FK_Sifre_Kullanici" FromRole="Kullanici" ToRole="Sifre" />
+        </EntityType>
+        <EntityType Name="Sifre">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Kullanici_ID" Type="Int32" Nullable="false" />
+          <Property Name="KayıtliSifre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Aciklama" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Kategori_ID" Type="Int32" Nullable="false" />
+          <Property Name="Durum" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Kategori" Relationship="Self.FK_Sifre_Kategori" FromRole="Sifre" ToRole="Kategori" />
+          <NavigationProperty Name="Kullanici" Relationship="Self.FK_Sifre_Kullanici" FromRole="Sifre" ToRole="Kullanici" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Yetki">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Rol" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Durum" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Kullanicis" Relationship="Self.FK_Kullanici_Yetki" FromRole="Yetki" ToRole="Kullanici" />
+        </EntityType>
+        <Association Name="FK_Sifre_Kategori">
+          <End Role="Kategori" Type="Self.Kategori" Multiplicity="1" />
+          <End Role="Sifre" Type="Self.Sifre" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kategori">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Sifre">
+              <PropertyRef Name="Kategori_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Kategori_Talep_Kullanici">
+          <End Role="Kullanici" Type="Self.Kullanici" Multiplicity="1" />
+          <End Role="Kategori_Talep" Type="Self.Kategori_Talep" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kullanici">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Kategori_Talep">
+              <PropertyRef Name="kullanici_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Kullanici_Yetki">
+          <End Role="Yetki" Type="Self.Yetki" Multiplicity="1" />
+          <End Role="Kullanici" Type="Self.Kullanici" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Yetki">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Kullanici">
+              <PropertyRef Name="RolID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sifre_Kullanici">
+          <End Role="Kullanici" Type="Self.Kullanici" Multiplicity="1" />
+          <End Role="Sifre" Type="Self.Sifre" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kullanici">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Sifre">
+              <PropertyRef Name="Kullanici_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Kategoris" EntityType="Self.Kategori" />
+          <EntitySet Name="Kategori_Talep" EntityType="Self.Kategori_Talep" />
+          <EntitySet Name="KayitTaleps" EntityType="Self.KayitTalep" />
+          <EntitySet Name="Kullanicis" EntityType="Self.Kullanici" />
+          <EntitySet Name="Sifres" EntityType="Self.Sifre" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="Yetkis" EntityType="Self.Yetki" />
+          <AssociationSet Name="FK_Sifre_Kategori" Association="Self.FK_Sifre_Kategori">
+            <End Role="Kategori" EntitySet="Kategoris" />
+            <End Role="Sifre" EntitySet="Sifres" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Kategori_Talep_Kullanici" Association="Self.FK_Kategori_Talep_Kullanici">
+            <End Role="Kullanici" EntitySet="Kullanicis" />
+            <End Role="Kategori_Talep" EntitySet="Kategori_Talep" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Kullanici_Yetki" Association="Self.FK_Kullanici_Yetki">
+            <End Role="Yetki" EntitySet="Yetkis" />
+            <End Role="Kullanici" EntitySet="Kullanicis" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sifre_Kullanici" Association="Self.FK_Sifre_Kullanici">
+            <End Role="Kullanici" EntitySet="Kullanicis" />
+            <End Role="Sifre" EntitySet="Sifres" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MVCPasswordsModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="Kategoris">
+            <EntityTypeMapping TypeName="MVCPasswordsModel.Kategori">
+              <MappingFragment StoreEntitySet="Kategori">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Kategori_Isim" ColumnName="Kategori_Isim" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Kategori_Talep">
+            <EntityTypeMapping TypeName="MVCPasswordsModel.Kategori_Talep">
+              <MappingFragment StoreEntitySet="Kategori_Talep">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="kullanici_ID" ColumnName="kullanici_ID" />
+                <ScalarProperty Name="Isim" ColumnName="Isim" />
+                <ScalarProperty Name="Aciklama" ColumnName="Aciklama" />
+                <ScalarProperty Name="durum" ColumnName="durum" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="KayitTaleps">
+            <EntityTypeMapping TypeName="MVCPasswordsModel.KayitTalep">
+              <MappingFragment StoreEntitySet="KayitTalep">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="isim_soyisim" ColumnName="isim_soyisim" />
+                <ScalarProperty Name="mail" ColumnName="mail" />
+                <ScalarProperty Name="adminMi" ColumnName="adminMi" />
+                <ScalarProperty Name="durum" ColumnName="durum" />
+                <ScalarProperty Name="aciklama" ColumnName="aciklama" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Kullanicis">
+            <EntityTypeMapping TypeName="MVCPasswordsModel.Kullanici">
+              <MappingFragment StoreEntitySet="Kullanici">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Mail" ColumnName="Mail" />
+                <ScalarProperty Name="Sifre" ColumnName="Sifre" />
+                <ScalarProperty Name="IsimSoyisim" ColumnName="IsimSoyisim" />
+                <ScalarProperty Name="KayıtTarih" ColumnName="KayıtTarih" />
+                <ScalarProperty Name="SonGiris" ColumnName="SonGiris" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="RolID" ColumnName="RolID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sifres">
+            <EntityTypeMapping TypeName="MVCPasswordsModel.Sifre">
+              <MappingFragment StoreEntitySet="Sifre">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Kullanici_ID" ColumnName="Kullanici_ID" />
+                <ScalarProperty Name="KayıtliSifre" ColumnName="KayıtliSifre" />
+                <ScalarProperty Name="Aciklama" ColumnName="Aciklama" />
+                <ScalarProperty Name="Kategori_ID" ColumnName="Kategori_ID" />
+                <ScalarProperty Name="Durum" ColumnName="Durum" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="MVCPasswordsModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Yetkis">
+            <EntityTypeMapping TypeName="MVCPasswordsModel.Yetki">
+              <MappingFragment StoreEntitySet="Yetki">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Rol" ColumnName="Rol" />
+                <ScalarProperty Name="Durum" ColumnName="Durum" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,239 @@
+﻿@model MultiView
+@{
+    ViewBag.Title = "KullaniciList";
+    Layout = "~/Views/Shared/_adminlayout2.cshtml";
+}
+<link rel="stylesheet" href="sweetalert2.min.css">
+
+<div class="modal fade" tabindex="-1" id="kullaniciguncellee">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Şifre Güncelleme</h5>
+
+                <!--begin::Close-->
+                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                    <span class="svg-icon svg-icon-2x"></span>
+                </div>
+                <!--end::Close-->
+            </div>
+
+            <div class="modal-body">
+                @*<div class="form-group">
+                        <label for="kullaniciad">İsim Soyisim</label>
+                        <input type="text" class="form-control" id="kullaniciad">
+                    </div>*@
+                <div class="form-group">
+                    <label for="isimsoyisim">İsim Soyisim</label>
+                    <input type="text" class="form-control" id="isimsoyisim">
+                </div>
+                <div class="form-group">
+                    <label for="mailadress">Mail Adresi</label>
+                    <input type="text" class="form-control" id="mailadress">
+                </div>
+                <div class="form-group">
+                    <label for="sifreler">Kaydedilecek Şifre</label>
+                    <input type="text" class="form-control" id="sifreler">
+                </div>
+
+                <div class="form-group">
+                    <label for="select">Kullanıcı Yetkisi</label>
+                    <select class="form-select form-select-lg" id="select">
+                        <option value="0" selected>Lütfen Bir Kategori Seçiniz</option>
+                        @foreach (var item in Model.Yetki)
+                        {
+                            <option value="@item.ID">@item.Rol</option>
+                        }
+                    </select>
+                </div>
+
+
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Kapat</button>
+                <button type="button" id="KullaniciGuncelModal" class="btn btn-primary">Güncel Et</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card mb-5 mb-xl-8">
+    <!--begin::Header-->
+    <div class="card-header border-0 pt-5">
+        <h3 class="card-title align-items-start flex-column">
+            <span class="card-label fw-bolder fs-3 mb-1">Kullanıcılar Tablosu</span>
+        </h3>
+
+    </div>
+    <!--end::Header-->
+    <!--begin::Body-->
+    <div class="card-body py-3">
+
+        <div class="table-responsive text-center">
+
+            <table class="table table-row-bordered table-row-gray-100 align-middle gs-0 gy-3">
+
+                <thead>
+                    <tr>
+                        <th>İsim Soyisim</th>
+                        <th>Mail</th>
+                        <th>Şifre</th>
+                        <th>Kayıt Tarihi</th>
+                        <th>Son Giriş</th>
+                        <th>Yetki</th>
+                        <th>Seçenekler</th>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model.kullanicilar)
+                    {
+                        <tr >
+
+                            <td onclick="rowsclick(@item.ID)">
+                                @item.IsimSoyisim
+                            </td>
+                            <td onclick="rowsclick(@item.ID)">
+                                @item.Mail
+                            </td>
+                            <td onclick="rowsclick(@item.ID)">
+                                @item.Sifre
+                            </td>
+                            <td onclick="rowsclick(@item.ID)">
+                                @item.KayıtTarih
+                            </td>
+                            <td onclick="rowsclick(@item.ID)">
+                                @item.SonGiris
+                            </td>
+                            <td onclick="rowsclick(@item.ID)">
+                                @item.Yetki.Rol
+                            </td>
+                            <td>
+                                <a onclick="guncelle(@item.ID)" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
+                                    <!--begin::Svg Icon | path: icons/duotune/general/gen019.svg-->
+                                    <span class="svg-icon svg-icon-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                            <path d="M17.5 11H6.5C4 11 2 9 2 6.5C2 4 4 2 6.5 2H17.5C20 2 22 4 22 6.5C22 9 20 11 17.5 11ZM15 6.5C15 7.9 16.1 9 17.5 9C18.9 9 20 7.9 20 6.5C20 5.1 18.9 4 17.5 4C16.1 4 15 5.1 15 6.5Z" fill="black"></path>
+                                            <path opacity="0.3" d="M17.5 22H6.5C4 22 2 20 2 17.5C2 15 4 13 6.5 13H17.5C20 13 22 15 22 17.5C22 20 20 22 17.5 22ZM4 17.5C4 18.9 5.1 20 6.5 20C7.9 20 9 18.9 9 17.5C9 16.1 7.9 15 6.5 15C5.1 15 4 16.1 4 17.5Z" fill="black"></path>
+                                        </svg>
+                                    </span>
+                                    <!--end::Svg Icon-->
+                                </a>
+                                <a onclick="sil(@item.ID)" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm">
+                                    <!--begin::Svg Icon | path: icons/duotune/general/gen027.svg-->
+                                    <span class="svg-icon svg-icon-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                            <path d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z" fill="black"></path>
+                                            <path opacity="0.5" d="M5 5C5 4.44772 5.44772 4 6 4H18C18.5523 4 19 4.44772 19 5V5C19 5.55228 18.5523 6 18 6H6C5.44772 6 5 5.55228 5 5V5Z" fill="black"></path>
+                                            <path opacity="0.5" d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V4H9V4Z" fill="black"></path>
+                                        </svg>
+                                    </span>
+                                    <!--end::Svg Icon-->
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+</div>
+@*<script src="sweetalert2.min.js"></script>*@
+
+<script type="text/javascript">
+
+
+    var yetkival = 0;
+    var idkul = 0;
+    //$("select").change(function () {
+    //    yetkival = $(this).children(":selected").attr("value");
+    //})
+    function guncelle(id) {
+        idkul = id;
+
+        $.ajax({
+            url: '/Admin/DetayKullanici',
+            type: 'Post',
+            dataType: 'json',
+            data: { idkull: idkul },
+            success: function (data) {
+                var maill = data.Values.IsimSoyisim;
+                var isimsoy = data.Values.Mail;
+                var kullanicisifre = data.Values.Sifre;
+                yetkival = data.Values.RolID;
+
+                $("#select").val(yetkival);
+                $("#isimsoyisim").val(isimsoy);
+                $("#mailadress").val(maill);
+                $("#sifreler").val(kullanicisifre);
+                $('#kullaniciguncellee').modal("show");
+            },
+            error: function (data) {
+                alert(data.Values.IsimSoyisim);
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        $("#select").change(function () {
+            yetkival = $(this).children(":selected").attr("value");
+        });
+        $('#KullaniciGuncelModal').click(function () {
+            var kul = {
+                ID: idkul,
+                IsimSoyisim: $("#isimsoyisim").val(),
+                Sifre: $("#sifreler").val(),
+                Mail: $("#mailadress").val(),
+                RolID: yetkival,
+            }
+            Swal.fire({
+                title: 'Kullanıcıyı Güncellemek istediğinize emin misiniz?',
+                showDenyButton: true,
+                confirmButtonText: 'Onayla',
+                denyButtonText: `Kapat`,
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    $.ajax({
+                        url: '@Url.Action("kulguncelle", "Admin")',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: kul,
+                        success: function (data) {
+                            if (data == true) {
+                                Swal.fire({
+                                    title: "Kullanıcı başarıyla güncellendi",
+                                    confirmButtonText:"Onayla"
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        location.reload();
+                                    }
+                                })
+                            }
+                            else if (data == false) {
+                                Swal.fire(
+                                    'Başarısız',
+                                    'Hatalı İşlem',
+                                    'Error'
+                                )
+                            }
+                        },
+                        error: function (data) {
+                            if (data == false) {
+                                alert("onaylanmadı");
+                            }
+                        }
+                    });
+                }
+            })
+        });
+    });
+    function rowsclick(id) {
+        location.href = "@Url.Action("KullaniciSifres","Admin")" + "/" + id;
+    }
+</script>
+

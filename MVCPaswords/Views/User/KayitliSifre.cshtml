@@ -1,0 +1,241 @@
+﻿@model MultiView
+@{
+    ViewBag.Title = "KayitliSifre";
+    Layout = "~/Views/Shared/_userLayout.cshtml";
+}
+
+
+<script type="text/javascript">
+    var idd = 0;
+    var katisim = 0;
+    function sifreguncelle(id) {
+         idd = id;
+        $.ajax({
+            url: '/User/SifDetail',
+            type: 'POST',
+            dataType: 'json',
+            data: { id: idd },
+            success: function (data) {
+
+
+                var sifres = data.Result.KayıtliSifre;
+                var aciklas = data.Result.Aciklama;
+                katisim = data.Result.Kategori_ID;
+
+
+                $("select").val(katisim);
+                $("#sifre").val(sifres);
+                $("#Aciklamaa").val(aciklas);
+                $('#sifreguncelleme').modal("show");
+            },
+            error: function (data) {
+                alert('errrorr');
+            }
+        });
+
+    }
+
+     $(document).ready(function () {
+
+         $("#select").change(function () {
+             katisim = $(this).children(":selected").attr("value");
+         });
+         $('#SifreGuncelleModal').click(function () {
+
+            var sif = {
+                ID: idd,
+                KayıtliSifre: $("#sifre").val(),
+                Aciklama: $("#Aciklamaa").val(),
+                Kategori_ID: katisim,
+            }
+
+            $.ajax({
+                url: '@Url.Action("sifGuncelle", "User")',
+                type: 'POST',
+                dataType: 'json',
+                data: sif,
+                success: function (data) {
+                    if (data == true) {
+                        location.reload();
+                    }
+                    else {
+                        Swal.fire(
+                            "Hata",
+                            "Bir hata oluştu",
+                            "Error"
+                        )
+                    }
+                },
+
+                error: function (data) {
+
+                }
+            });
+        });
+     });
+    function sifreSil(silid) {
+        Swal.fire({
+            title: 'Şifreyi Silmek istediğinize emin misiniz?',
+            showDenyButton: true,
+            confirmButtonText: 'Onayla',
+            denyButtonText: `Kapat`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '/User/SifreSil',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { silid: silid },
+                    success: function (data) {
+                        if (data == true) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Başarılı',
+                                text: 'Şifreniz Silinmiştir!',
+                                confirmButtonText: 'Onayla',
+
+                            }).then((result) => {
+                                
+                                if (result.isConfirmed) {
+                                    location.reload();
+                                }
+                            })
+                        }
+                    }
+                    ,
+                    error: function (data) {
+                        alert('errrorr');
+                    }
+                });
+            }
+            else if (result.isDenied) {
+                Swal.fire('Changes are not saved', '', 'info')
+            }
+        })
+    }
+      
+
+</script>
+
+<div class="modal fade" tabindex="-1" id="sifreguncelleme">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Şifre Güncelleme</h5>
+
+                <!--begin::Close-->
+                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                    <span class="svg-icon svg-icon-2x"></span>
+                </div>
+                <!--end::Close-->
+            </div>
+
+            <div class="modal-body">
+                @*<div class="form-group">
+                        <label for="kullaniciad">İsim Soyisim</label>
+                        <input type="text" class="form-control" id="kullaniciad">
+                    </div>*@
+                <div class="form-group">
+                    <label for="sifre">Kaydedilecek Şifre</label>
+                    <input type="text" class="form-control" id="sifre">
+                </div>
+                <div class="form-group">
+                    <label for="Aciklama">Şifre Açıklamasını</label>
+                    <textarea style="resize:none" class="form-control" id="Aciklamaa" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="select">Şifrenizin Hangi Kategoride Olduğunu Seçiniz</label>
+                    <select class="form-select form-select-lg" id="select">
+                        <option selected>Lütfen Bir Kategori Seçiniz</option>
+                        @foreach (var item in Model.Kategori)
+                        {
+                            <option value="@item.ID">@item.Kategori_Isim</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Kapat</button>
+                <button type="button" id="SifreGuncelleModal" class="btn btn-primary">Güncel Et</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card mb-5 mb-xl-8">
+    <!--begin::Header-->
+    <div class="card-header border-0 pt-5">
+        <h3 class="card-title align-items-start flex-column">
+            <span class="card-label fw-bolder fs-3 mb-1">Şifreler</span>
+            <span class="text-muted mt-1 fw-bold fs-7">Tüm Şifreler</span>
+        </h3>
+
+    </div>
+    <!--end::Header-->
+    <!--begin::Body-->
+    <div class="card-body py-3">
+        <div class="table-responsive text-center">
+            <table class="table table-row-bordered table-row-gray-100 align-middle gs-0 gy-3">
+                <thead>
+                    <tr>
+                        <th>Adı Soyadı</th>
+                        <th>Şifre</th>
+                        <th>Açıklama</th>
+                        <th>Kategori</th>
+                        <th>Seçenekler</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model.sifreList)
+                    {
+                        <tr>
+                            <td>
+                                @item.Kullanici.IsimSoyisim
+                            </td>
+                            <td>
+                                @item.KayıtliSifre
+                            </td>
+
+                            <td>
+                                @item.Aciklama
+                            </td>
+                            <td>
+                                @item.Kategori.Kategori_Isim
+                            </td>
+                            <td>
+                                <a onclick="sifreguncelle(@item.ID)" id="sifreguncelle" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
+                                    <!--begin::Svg Icon | path: icons/duotune/general/gen019.svg-->
+                                    <span class="svg-icon svg-icon-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                            <path d="M17.5 11H6.5C4 11 2 9 2 6.5C2 4 4 2 6.5 2H17.5C20 2 22 4 22 6.5C22 9 20 11 17.5 11ZM15 6.5C15 7.9 16.1 9 17.5 9C18.9 9 20 7.9 20 6.5C20 5.1 18.9 4 17.5 4C16.1 4 15 5.1 15 6.5Z" fill="black"></path>
+                                            <path opacity="0.3" d="M17.5 22H6.5C4 22 2 20 2 17.5C2 15 4 13 6.5 13H17.5C20 13 22 15 22 17.5C22 20 20 22 17.5 22ZM4 17.5C4 18.9 5.1 20 6.5 20C7.9 20 9 18.9 9 17.5C9 16.1 7.9 15 6.5 15C5.1 15 4 16.1 4 17.5Z" fill="black"></path>
+                                        </svg>
+                                    </span>
+                                    <!--end::Svg Icon-->
+                                </a>
+                                <a onclick="sifreSil(@item.ID)" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm">
+                                    <!--begin::Svg Icon | path: icons/duotune/general/gen027.svg-->
+                                    <span class="svg-icon svg-icon-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                            <path d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z" fill="black"></path>
+                                            <path opacity="0.5" d="M5 5C5 4.44772 5.44772 4 6 4H18C18.5523 4 19 4.44772 19 5V5C19 5.55228 18.5523 6 18 6H6C5.44772 6 5 5.55228 5 5V5Z" fill="black"></path>
+                                            <path opacity="0.5" d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V4H9V4Z" fill="black"></path>
+                                        </svg>
+                                    </span>
+                                    <!--end::Svg Icon-->
+                                </a>
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+

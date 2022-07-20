@@ -1,0 +1,424 @@
+﻿@model MultiView
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <title>oKSitem Teknoloji All Password</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta property="og:locale" content="en_US" />
+    <link rel="shortcut icon" href="~/demo13/assets/media/logos/favicon.ico" />
+    <link href="~/Content/apis.css" rel="stylesheet" />
+    <link href="~/demo13/assets/plugins/custom/fullcalendar/fullcalendar.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="~/demo13/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="~/demo13/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="~/demo13/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="sweetalert2.min.css">
+
+
+    <script src="~/Scripts/jquery-3.6.0.min.js"></script>
+    <script src="~/demo13/assets/plugins/global/plugins.bundle.js"></script>
+    <script src="~/demo13/assets/js/scripts.bundle.js"></script>
+    <!--end::Glob~/demo13 Javascript Bundle-->
+    <!--begin::Pa~/demo13 Vendors Javascript(used by this page)-->
+    <script src="~/demo13/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js"></script>
+    <script src="~/demo13/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+    <!--end::Page~/demo13endors Javascript-->
+    <!--begin::Pa~/demo13 Custom Javascript(used by this page)-->
+    <script src="~/demo13/assets/js/custom/widgets.js"></script>
+    <script src="~/demo13/assets/js/custom/apps/chat/chat.js"></script>
+    <script src="~/demo13/assets/js/custom/intro.js"></script>
+    <script src="~/demo13/assets/js/custom/modals/upgrade-plan.js"></script>
+    <script src="~/demo13/assets/js/custom/modals/create-app.js"></script>
+    <script src="~/demo13/assets/js/custom/modals/users-search.js"></script>
+    <script src="sweetalert2.min.js"></script>
+
+
+    <style>
+        /*Right*/
+        .modal-dialog {
+            position: fixed;
+            margin: auto;
+            width: 600px;
+            height: 100%;
+            right: 0px;
+        }
+
+        .modal-content {
+            height: 100%;
+        }
+
+        .tabs {
+            margin: 2px 5px 0px 5px;
+            padding-bottom: 10px;
+            cursor: pointer
+        }
+
+            .tabs:hover,
+            .tabs.active {
+                border-bottom: 1px solid #2196F3
+            }
+
+        fieldset {
+            display: none
+        }
+
+            fieldset.show {
+                display: block
+            }
+
+
+        .line {
+            background-color: #CFD8DC;
+            height: 1px;
+            width: 100%
+        }
+    </style>
+</head>
+
+<body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled toolbar-fixed toolbar-tablet-and-mobile-fixed aside-enabled aside-fixed" style="--kt-toolbar-height:55px;--kt-toolbar-height-tablet-and-mobile:55px">
+    <div class="modal fade" tabindex="-1" id="kt_modal_11">
+        <div class="modal-dialog" id="dialog">
+            <div class="modal-content" id="content">
+                <div class="modal-header">
+                    <div class="tabs active" id="tab01">
+                        <h6 class="font-weight-bold">Kullanıcı Onay</h6>
+                    </div>
+                    <div class="tabs" id="tab02">
+                        <h6 class="text-muted">Kategori Onay</h6>
+                    </div>
+                </div>
+                <div class="line"></div>
+                <div class="modal-body ">
+
+                    <fieldset class="show" id="tab011">
+                        <div>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Mail</th>
+                                        <th>Açıklama</th>
+                                        <th>Açıklama</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.kayitTList)
+                                    {
+                                        <tr>
+                                            <td>@item.mail</td>
+                                            <td>@item.aciklama</td>
+                                            <td><button type="button" class="btn btn-success" onclick="kayitonay(@item.ID)">Onayla </button></td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </fieldset>
+                    <fieldset id="tab021">
+                        <div>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <td>Adı Soyadı</td>
+                                        <td>Talep İsmi</td>
+                                        <td>Açıklama</td>
+                                        <td>Onaylama</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.KategoriTList)
+                                    {
+                                        <tr>
+                                            <td>@item.Kullanici.IsimSoyisim</td>
+                                            <td>@item.Isim</td>
+                                            <td>@item.Aciklama</td>
+                                            <td><button type="button" class="btn btn-success" onclick="kategoriOnay(@item.ID)">Onayla </button></td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </fieldset>
+                </div>
+
+
+                @*<div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Kapat</button>
+                        <button type="button" id="kategoritalep" class="btn btn-primary">Talep Et</button>
+                    </div>*@
+            </div>
+        </div>
+    </div>
+    <!--begin::Root-->
+    <div class="d-flex flex-column flex-root">
+        <!--begin::Page-->
+        <div class="page d-flex flex-row flex-column-fluid">
+            <!--begin::Aside-->
+            <div id="kt_aside" class="aside aside-dark aside-hoverable" data-kt-drawer="true" data-kt-drawer-name="aside" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'200px', '300px': '250px'}" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_aside_mobile_toggle">
+                <!--begin::Brand-->
+                <div class="aside-logo flex-column-auto" id="kt_aside_logo">
+                    <!--begin::Logo-->
+
+                    <img alt="Logo" src="~/Content/WhatsApp_Image_2022-03-29_at_1.16.40_PM-removebg-preview.png" class="h-50px logo" />
+
+
+                    <div id="kt_aside_toggle" class="btn btn-icon w-auto px-0 btn-active-color-primary aside-toggle" data-kt-toggle="true" data-kt-toggle-state="active" data-kt-toggle-target="body" data-kt-toggle-name="aside-minimize">
+                        <!--begin::Svg Icon | path: icons/duotune/arrows/arr074.svg-->
+                        <span class="svg-icon svg-icon-1 rotate-180">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M11.2657 11.4343L15.45 7.25C15.8642 6.83579 15.8642 6.16421 15.45 5.75C15.0358 5.33579 14.3642 5.33579 13.95 5.75L8.40712 11.2929C8.01659 11.6834 8.01659 12.3166 8.40712 12.7071L13.95 18.25C14.3642 18.6642 15.0358 18.6642 15.45 18.25C15.8642 17.8358 15.8642 17.1642 15.45 16.75L11.2657 12.5657C10.9533 12.2533 10.9533 11.7467 11.2657 11.4343Z" fill="black" />
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+                <!--end::Brand-->
+                <!--begin::Aside menu-->
+                <div class="aside-menu flex-column-fluid">
+                    <!--begin::Aside Menu-->
+                    <div class="hover-scroll-overlay-y my-2 py-5 py-lg-8" id="kt_aside_menu_wrapper" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_aside_logo, #kt_aside_footer" data-kt-scroll-wrappers="#kt_aside_menu" data-kt-scroll-offset="0">
+                        <!--begin::Menu-->
+                        <div class="menu menu-column menu-title-gray-800 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-500" id="#kt_aside_menu" data-kt-menu="true">
+                            <div class="menu-item">
+                                <div class="menu-content pb-2">
+                                    <span class="menu-section text-muted text-uppercase fs-8 ls-1">Listeler</span>
+                                </div>
+                            </div>
+                            <div class="menu-item">
+                                <a class="menu-link" href="/admin/KullaniciList">
+                                    <span class="menu-icon">
+
+                                        <img src="~/demo13/assets/media/icons/duotune/abstract/abs001.svg" />
+                                    </span>
+                                    <span class="menu-title">Kullanıclar</span>
+                                </a>
+                            </div>
+                          
+                            <div class="menu-item">
+                                <a class="menu-link " href="/Admin/Secmece">
+                                    <span class="menu-icon">
+                                        <img src="~/demo13/assets/media/icons/duotune/arrows/arr001.svg" />
+                                    </span>
+                                    <span class="menu-title">Kullanıcıya Göre Şifre</span>
+                                </a>
+                            </div>
+                        </div>
+                        <!--end::Menu-->
+                    </div>
+                </div>
+
+            </div>
+            <!--end::Aside-->
+            <!--begin::Wrapper-->
+            <div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
+
+                <!--begin::Header-->
+                <div id="kt_header" style="" class="header align-items-stretch">
+                    <div class="toolbar" id="kt_toolbar">
+                        <!--begin::Container-->
+                        <div id="kt_toolbar_container" class="container-fluid d-flex flex-stack">
+
+                        </div>
+
+                    </div>
+
+                    <!--begin::Container-->
+                    <div class="container-fluid d-flex align-items-stretch justify-content-between">
+                        <!--begin::Aside mobile toggle-->
+                        <div class="d-flex align-items-center d-lg-none ms-n3 me-1" title="Show aside menu">
+                            <div class="btn btn-icon btn-active-color-white" id="kt_aside_mobile_toggle">
+                                <i class="bi bi-alarm"></i>
+                            </div>
+                        </div>
+                        <!--end::Aside mobile toggle-->
+                        <!--begin::Mobile logo-->
+                        <!--end::Mobile logo-->
+                        <!--begin::Wrapper-->
+                        <div class="d-flex align-items-stretch justify-content-between flex-lg-grow-1">
+                            <!--begin::Navbar-->
+                            <div class="d-flex align-items-stretch" id="kt_header_nav">
+                                <!--begin::Menu wrapper-->
+                                <div class="header-menu align-items-stretch" data-kt-drawer="true" data-kt-drawer-name="header-menu" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'200px', '300px': '250px'}" data-kt-drawer-direction="end" data-kt-drawer-toggle="#kt_header_menu_mobile_toggle" data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_body', lg: '#kt_header_nav'}">
+                                    <!--begin::Menu-->
+                                    <div class="menu menu-lg-rounded menu-column menu-lg-row menu-state-bg menu-title-gray-700 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-400 fw-bold my-5 my-lg-0 align-items-stretch" id="#kt_header_menu" data-kt-menu="true">
+                                        <div class="menu-item me-lg-1">
+                                            <a class="menu-link py-3" href="/admin/index">
+                                                <span class="menu-title">Anasayfa</span>
+                                            </a>
+                                        </div>
+                                        <div class="menu-item me-lg-1">
+                                            <a href="/admin/KullaniciSifreEkle" class="menu-link py-3">
+                                                <span class="menu-title">Kullanıcı Ekleme</span>
+                                            </a>
+                                        </div>
+
+
+
+                                    </div>
+                                    <!--end::Menu-->
+                                </div>
+                                <!--end::Menu wrapper-->
+                            </div>
+                            <!--end::Navbar-->
+                            <!--begin::Topbar-->
+                            <div class="d-flex align-items-stretch">
+                                <!--begin::Menu wrapper-->
+
+                                <button type="button" class="btn btn-demo text-white topbar-item position-relative" id="sidebarmodel">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-left-text" viewBox="0 0 16 16">
+                                        <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+                                        <path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6zm0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z" />
+                                    </svg>
+                                    <span class="bullet bullet-dot bg-success h-6px w-6px position-absolute translate-middle top-0 mt-4 start-50 animation-blink"></span>
+                                </button>
+                                <!--end::Menu wrapper-->
+                            </div>
+                            <div class="d-flex align-items-stretch">
+                                <!--begin::Menu wrapper-->
+
+                                <button type="button" class="btn btn-demo text-white topbar-item position-relative">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-left-text" viewBox="0 0 16 16">
+                                        <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+                                        <path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6zm0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z" />
+                                    </svg>
+                                   
+                                </button>
+                                <!--end::Menu wrapper-->
+                            </div>
+
+                            <!--end::Topbar-->
+                        </div>
+                        <!--end::Wrapper-->
+                    </div>
+                    <!--end::Container-->
+                </div>
+                <!--begin::Content-->
+
+                <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+                    <!--begin::Toolbar-->
+                    @RenderBody()
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <!--begin::Global Javascript Bundle(used by all pages)-->
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#modalkategori").click(function () {
+                $('#kt_modal_1').modal('show');
+            })
+            $("#sidebarmodel").click(function () {
+                $('#kt_modal_11').modal('show');
+            })
+        })
+    </script>
+
+    <script type="text/javascript">
+
+
+        function kayitonay(id) {
+            if (id > -1) {
+                $.ajax({
+                    url: '@Url.Action("KayitTalep", "Admin")',
+                    type: 'POST',
+                    datatype: 'json',
+                    data: { id: id },
+                    success: function (data) {
+                        if (data == true) {
+                            alert("Kategori Talebi Oluşturulmuştur");
+
+                        }
+
+                    },
+
+                });
+
+            }
+
+        }
+        $(document).ready(function () {
+
+            $(".tabs").click(function () {
+
+                $(".tabs").removeClass("active");
+                $(".tabs h6").removeClass("font-weight-bold");
+                $(".tabs h6").addClass("text-muted");
+                $(this).children("h6").removeClass("text-muted");
+                $(this).children("h6").addClass("font-weight-bold");
+                $(this).addClass("active");
+
+                current_fs = $(".active");
+
+                next_fs = $(this).attr('id');
+                next_fs = "#" + next_fs + "1";
+
+                $("fieldset").removeClass("show");
+                $(next_fs).addClass("show");
+
+                current_fs.animate({}, {
+                    step: function () {
+                        current_fs.css({
+                            'display': 'none',
+                            'position': 'relative'
+                        });
+                        next_fs.css({
+                            'display': 'block'
+                        });
+                    }
+                });
+            });
+
+        });
+
+
+    @*$(document).ready(function () {
+        $("#kayitOnay").click(function () {
+            var id = $("#kayitOnay").val();
+
+            $.ajax({
+                url: '@Url.Action("KayitTalep", "Admin")',
+                type: 'POST',
+                datatype: 'json',
+                data: {id:id},
+                success: function (data) {
+                    if (data == true) {
+                        alert("Kategori Talebi Oluşturulmuştur");
+                    }
+                },
+            });
+        });
+    });*@
+    </script>
+
+    <!--end::Page Custom Javascript-->
+    <!--end::Javascript-->
+    <!--Begin::Google Tag Manager (noscript) -->
+    <!--End::Google Tag Manager (noscript) -->
+</body>
+<!--end::Body-->
+<!-- Mirrored from preview.keenthemes.com/metronic8/demo13/dark/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 20 Dec 2021 07:09:52 GMT -->
+</html>
+
+
+
+
+
+
+
+
+
+
+
+<!--<div id="kt_header_search" class="d-flex align-items-stretch show menu-dropdown" data-kt-search-keypress="true" data-kt-search-min-length="2" data-kt-search-enter="enter" data-kt-search-layout="menu" data-kt-menu-trigger="auto" data-kt-menu-overflow="false" data-kt-menu-permanent="true" data-kt-menu-placement="bottom-end" data-kt-menu-flip="bottom" data-kt-search="true">-->
+<!--begin::Search toggle-->
+@*</div>*@
